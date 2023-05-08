@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Admin Dashboard</title>
+
+
+
+
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap.min.css">
+   <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.3.1/css/fixedHeader.bootstrap.min.css">
+   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap.min.css">
+   <style type="text/css" rel="stylesheet">
+      @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+
+      * {
+         margin: 0;
+         padding: 0;
+         /* box-sizing: border-box; */
+         font-family: 'Ubuntu', sans-serif;
+      }
+
+      :root {
+         --blue: #287bff;
+         --white: #fff;
+         --gray: #f5f5f5;
+         --black1: #222;
+         --black2: #999;
+      }
+
+      body {
+         min-height: 100vh;
+         overflow-x: hidden;
+         background: var(--blue);
+      }
+
+      img {
+         margin: 0 auto;
+         width: 100px;
+         height: 100px;
+         display: block;
+         margin-left: auto;
+         margin-right: auto;
+      }
+
+      .container {
+         /* position: relative; */
+         width: 100%;
+      }
+
+      .navigation {
+         position: fixed;
+         width: 300px;
+         height: 100%;
+         background: var(--blue);
+         border-left: 10px solid var(--blue);
+         transition: 0.5s;
+         overflow: hidden;
+      }
+
+      .navigation.active {
+         width: 100px;
+      }
+
+      .navigation ul {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+      }
+
+      .navigation ul li {
+         position: relative;
+         width: 100%;
+         list-style: none;
+         margin-top: 30px;
+         border-top-left-radius: 20px;
+         border-bottom-left-radius: 20px;
+      }
+
+      /* .navigation ul li:hovered, */
+      .navigation ul li:hover,
+      .navigation ul li.hovered,
+      .navigation ul li.hovered2 {
+         background: var(--white);
+      }
+
+      .navigation ul li:nth-child(1) {
+         margin-bottom: 40px;
+         pointer-events: none;
+      }
+
+      .navigation ul li h1 {
+         position: relative;
+         display: block;
+         width: 100%;
+         display: flex;
+         text-decoration: none;
+         color: var(--white);
+         left: 0
+      }
+
+      .navigation ul li a {
+         position: relative;
+         display: block;
+         width: 100%;
+         display: flex;
+         text-decoration: none;
+         color: var(--white);
+      }
+
+      /* .navigation ul li:hovered a, */
+      .navigation ul li:hover a,
+      .navigation ul li.hovered a,
+      .navigation ul li.hovered2 a {
+         color: var(--blue);
+      }
+
+      /* .navigation ul li.hovered a {
+      background: var(--white);
+   } */
+
+      .navigation ul li a .icon {
+         position: relative;
+         display: block;
+         min-width: 60px;
+         height: 60px;
+         line-height: 70px;
+         text-align: center;
+      }
+
+      .navigation ul li a .icon ion-icon {
+         font-size: 1.75em
+      }
+
+      .navigation ul li a .title {
+         position: relative;
+         display: block;
+         padding: 0 10px;
+         height: 60px;
+         line-height: 60px;
+         text-align: start;
+         white-space: nowrap;
+      }
+
+      /* curve outside */
+      /* .navigation ul li:hovered a::before, */
+      .navigation ul li:hover a::before,
+      .navigation ul li.hovered a::before,
+      .navigation ul li.hovered2 a::before {
+         content: '';
+         position: absolute;
+         right: 0;
+         top: -50px;
+         width: 50px;
+         height: 50px;
+         background: transparent;
+         border-radius: 50%;
+         box-shadow: 35px 35px 0 10px var(--white);
+         pointer-events: none;
+      }
+
+      /* .navigation ul li:hovered a::after, */
+      .navigation ul li:hover a::after,
+      .navigation ul li.hovered a::after,
+      .navigation ul li.hovered2 a::after {
+         content: '';
+         position: absolute;
+         right: 0;
+         bottom: -50px;
+         width: 50px;
+         height: 50px;
+         background: transparent;
+         border-radius: 50%;
+         box-shadow: 35px -35px 0 10px var(--white);
+         pointer-events: none;
+      }
+
+      .main {
+         position: absolute;
+         width: calc(100% - 300px);
+         left: 300px;
+         min-height: 100vh;
+         background: var(--white);
+         transition: 0.5s;
+      }
+
+      .main.active {
+         width: calc(100% - 80px);
+         left: 80px;
+      }
+
+      .topbar {
+         width: 100%;
+         height: 60px;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         padding: 0 10px;
+      }
+
+      .toggle {
+         position: relative;
+         top: 0;
+         width: 60px;
+         height: 60px;
+         display: flex;
+         background: var(--white);
+         justify-content: center;
+         align-items: center;
+         font-size: 2.5em;
+         cursor: pointer;
+      }
+
+      .search {
+         position: relative;
+         width: 400px;
+         margin: 0 10px;
+      }
+
+      .search label {
+         position: relative;
+         width: 100%;
+      }
+
+      .search label input {
+         width: 100%;
+         height: 40;
+         border-radius: 40px;
+         padding: 5px 20px;
+         padding-left: 35px;
+         outline: none;
+         border: 1px solid var(--black2)
+      }
+
+      .search label ion-icon {
+         position: absolute;
+         top: 0;
+         left: 10px;
+         font-size: 1.2em;
+      }
+
+      .user {
+         position: relative;
+         min-width: 40px;
+         height: 40px;
+         border-radius: 50%;
+         overflow: hidden;
+         cursor: pointer;
+      }
+
+      .user img {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         object-fit: cover;
+      }
+
+      .cardBox {
+         position: relative;
+         width: 100%;
+         padding: 20px;
+         display: grid;
+         grid-template-columns: repeat(4, 1fr);
+      }
+
+      .cardBox .card {
+         position: relative;
+         background: var(--white);
+         padding: 30px;
+         border-radius: 20px;
+         display: flex;
+         justify-content: space-between;
+         box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+      }
+
+      .cardBox .card .numbers {
+         position: relative;
+         font-weight: 500;
+         font-size: 2.5em;
+         color: var(--blue);
+      }
+
+      .cardBox .card .cardName {
+         color: var(--black2);
+         font-size: 1.1em;
+         margin-top: 5px;
+      }
+
+      .cardBox .card .iconBx {
+         font-size: 3.5em;
+         color: var(--black2);
+      }
+
+      .cardBox .card:hover {
+         background: var(--blue);
+      }
+
+      .cardBox .card:hover .numbers,
+      .cardBox .card:hover .cardName,
+      .cardBox .card:hover .iconBx {
+         color: var(--white)
+      }
+
+      .details {
+         position: relative;
+         width: 100%;
+         padding: 20px;
+         display: grid;
+         /* grid-template-columns: 2fr 1fr; */
+         grid-gap: 30px;
+         margin-top: 10px;
+      }
+
+      .details .recentOrders {
+         position: relative;
+         display: grid;
+         min-height: 500px;
+         background: var(--white);
+         padding: 20px;
+         box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+         border-radius: 20px;
+      }
+
+      .cardHeader {
+         display: flex;
+         justify-content: space-between;
+         align-items: flex-start;
+      }
+
+      .cardHeader h2 {
+         font-weight: 600;
+         color: var(--blue);
+      }
+
+      .btn {
+         position: relative;
+         padding: 5px 10px;
+         background: var(--blue);
+         text-decoration: none;
+         color: var(--white);
+         border-radius: 6px;
+         margin: 0 0 0 10px;
+      }
+
+      .details table {
+         width: 100%;
+         border-collapse: collapse;
+         margin-top: 10px
+      }
+
+      .details table thead td {
+         font-weight: 600;
+      }
+
+      .details .recentOrders table tr {
+         color: var(--black1);
+         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .details .recentOrders table tr:last-child {
+         border-bottom: none;
+      }
+
+      .details .recentOrders table tbody tr:hover {
+         background: var(--blue);
+         color: var(--white);
+      }
+
+      .details .recentOrders table tr td {
+         padding: 10px;
+      }
+
+      .details .recentOrders table tr td:last-child {
+         text-align: end;
+      }
+
+      .details .recentOrders table tr td:nth-child(2) {
+         text-align: end;
+      }
+
+      .details .recentOrders table tr td:nth-child(3) {
+         text-align: center;
+      }
+
+      .status.delivered {
+         padding: 2px 4px;
+         background: #8de02c;
+         color: var(--white);
+         border-radius: 4px;
+         font-size: 14px;
+         font-weight: 500;
+      }
+
+      .status.pending {
+         padding: 2px 4px;
+         background: #f9ca3f;
+         color: var(--white);
+         border-radius: 4px;
+         font-size: 14px;
+         font-weight: 500;
+      }
+
+      .status.return {
+         padding: 2px 4px;
+         background: #f00;
+         color: var(--white);
+         border-radius: 4px;
+         font-size: 14px;
+         font-weight: 500;
+      }
+
+      .status.inprogress {
+         padding: 2px 4px;
+         background: #1795ce;
+         color: var(--white);
+         border-radius: 4px;
+         font-size: 14px;
+         font-weight: 500;
+      }
+
+      table,
+      th,
+      td {
+         border: 1px solid black;
+      }
+
+      /* now, make it responsive design */
+      @media (max-width: 991px) {
+         .navigation {
+            left: -300px;
+         }
+
+         .navigation.active {
+            width: 300px;
+            left: 0;
+         }
+
+         .main {
+            width: 100%;
+            left: 0;
+         }
+
+         .main.active {
+            left: 300px;
+         }
+
+         .cardBox {
+            grid-template-columns: repeat(2, 1fr);
+         }
+      }
+
+      @media (max-width: 768px) {
+         .details {
+            grid-template-columns: repeat(1, 1fr);
+         }
+
+         .recentOrders {
+            overflow-x: auto;
+         }
+
+         .status.inprogress {
+            white-space: nowrap;
+         }
+      }
+
+      /* The Modal (background) */
+      .modal {
+         display: none;
+         /* Hidden by default */
+         position: fixed;
+         /* Stay in place */
+         z-index: 1;
+         /* Sit on top */
+         padding-top: 100px;
+         /* Location of the box */
+         left: 0;
+         top: 0;
+         width: 100%;
+         /* Full width */
+         height: 100%;
+         /* Full height */
+         overflow: auto;
+         /* Enable scroll if needed */
+         background-color: rgb(0, 0, 0);
+         /* Fallback color */
+         background-color: rgba(0, 0, 0, 0.4);
+         /* Black w/ opacity */
+      }
+
+      /* Modal Content */
+      .modal-content {
+         background-color: #fefefe;
+         margin: auto;
+         padding: 20px;
+         border: 1px solid #888;
+         width: 80%;
+      }
+
+      /* The Close Button */
+      .close,
+      .close2 {
+         color: #aaaaaa;
+         float: right;
+         font-size: 28px;
+         font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus,
+      .close2:hover,
+      .close2:focus {
+         color: #000;
+         text-decoration: none;
+         cursor: pointer;
+      }
+   </style>
+
+</head>
+
+<body>
+   <div class="container">
+      <div class="navigation">
+         <ul>
+            <li>
+               <h1 href="#">
+                  <a href=""><span class="icon"><ion-icon name="logo-apple"></ion-icon></span>
+                     <span class="title">Blue</span>
+                  </a>
+               </h1>
+            </li>
+
+            <li>
+               <a href="/">
+                  <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                  <span class="title" select>Dashboard</span>
+               </a>
+            </li>
+
+            <li>
+               <a href="#">
+                  <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                  <span class="title">Users</span>
+               </a>
+            </li>
+
+            <li class="hovered2">
+               <a href="#">
+                  <span class="icon"><ion-icon name="shirt-outline"></ion-icon></span>
+                  <span class="title">Products</span>
+               </a>
+            </li>
+            <li>
+               <a href="#">
+                  <span class="icon"><ion-icon name="receipt-outline"></ion-icon></span>
+                  <span class="title">Orders</span>
+               </a>
+            </li>
+         </ul>
+      </div>
+      <!-- main -->
+      <div class="main">
+         <div class="topbar">
+            <!-- openModal -->
+            <button id="myBtn" class="btn">Thêm</button>
+         </div>
+
+         <!-- The Modal Thêm Sản phẩm -->
+         <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+               <span class="close">&times;</span>
+               <form id="myForm" action="/add-product" method="post" enctype="multipart/form-data">
+                  <p>
+                     <label for="title">Tên sản phẩm:
+                        <input id="title" name="title" placeholder="Áo cadigan nam" />
+                     </label>
+
+                  </p>
+                  <p>
+                     <label for="price">Giá sản phẩm:
+                        <input id="price" name="price" placeholder="100.000" />
+                     </label>
+                  </p>
+                  <label for="cars">Loại sản phẩm:</label>
+
+                  <select name="categories" id="categories">
+                     <option value="Áo Nam">Áo Nam</option>
+                     <option value="Áo Nữ">Áo Nữ</option>
+                     <option value="Quần Nam">Quần Nam</option>
+                     <option value="Quần Nữ">Quần Nữ</option>
+                  </select>
+                  <p>
+                     <label>Ảnh sản phẩm:
+                        <input id="image" name="myFile" type="file" accept="image/png, image/gif, image/jpeg" />
+                     </label>
+                  </p>
+                  <input type="hidden" id="details" name="details" />
+
+
+                  <!-- xử lý thông tin đầu v details -->
+                  <input type="text" id="size" placeholder="Size">
+                  <input type="text" id="quantity" placeholder="Số lượng">
+                  <div>
+                     <button id="save_task" type="button" onclick="addTodo(); Read()">Lưu</button>
+                  </div>
+                  <hr>
+                  <div>
+                     <table>
+                        <thead>
+                           <tr>
+                              <th>Size</th>
+                              <th>Quantity</th>
+                           </tr>
+                        </thead>
+                        <tbody id="todo">
+
+                        </tbody>
+
+                     </table>
+
+                     <input type="submit" value="Xác nhận" />
+               </form>
+
+            </div>
+         </div>
+
+
+      </div>
+
+      <div class="details">
+         <!-- DataTable - Read - Update -->
+         <table id="example" class="table table-striped table-bordered nowrap">
+            <thead>
+               <tr>
+                  <td>Hình ảnh</td>
+                  <td>Tên sản phẩm</td>
+                  <td>Giá tiền</td>
+                  <td>Loại sản phẩm</td>
+                  <td>Thông tin</td>
+                  <td>Trạng thái</td>
+                  <td>Hành động</td>
+               </tr>
+            </thead>
+            <tbody>
+               <% product.forEach((item)=> { %>
+                  <tr>
+                     <td>
+                        <div>
+                           <img src="/uploads/images/<%= item.img %>">
+                        </div>
+                     </td>
+                     <td>
+                        <%= item.title %>
+                     </td>
+                     <td>
+                        <%= item.price + ' ₫' %>
+
+                     </td>
+                     <td>
+                        <%= item.categories %>
+                     </td>
+                     <td>
+                        <% for (let index=0; index < item.details.length; index++) { %>
+                           <%= '-' + 'Size: ' + item.details[index].size + ',' %>
+                              <%= 'Số lượng: ' + item.details[index].quantity %>
+                                 <br>
+                                 <% }%>
+                     </td>
+                     <td>
+                        <% if (item.status==0) { %>
+                           <p>Còn hàng</p>
+                           <% } else if (item.status !==0) { %>
+                              <p>Hết hàng</p>
+                              <% } %>
+                     </td>
+                     <td>
+                        <a class=" ui purple button" href="/product/<%= item._id %>"><ion-icon
+                              name="create-outline"></ion-icon></a>
+                     </td>
+
+                  </tr>
+                  <% }) %>
+            </tbody>
+         </table>
+      </div>
+   </div>
+   </div>
+   </div>
+   </div>
+   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+   <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+   <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap.min.js"></script>
+   <script src="https://cdn.datatables.net/fixedheader/3.3.1/js/dataTables.fixedHeader.min.js"></script>
+   <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+   <script src="https://cdn.datatables.net/responsive/2.4.0/js/responsive.bootstrap.min.js"></script>
+
+   <script>
+      // Datatables
+      $(document).ready(function () {
+         var table = $('#example').DataTable({
+            responsive: true
+         });
+         new $.fn.dataTable.FixedHeader(table);
+      });   
+   </script>
+
+   <script>
+      // Get the modal
+      var modal = document.getElementById("myModal");
+      // Get the button that opens the modal
+      var btn = document.getElementById("myBtn");
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+
+      // When the user clicks the button, open the modal 
+      btn.onclick = function () {
+         modal.style.display = "block";
+      }
+
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function () {
+         modal.style.display = "none";
+         localStorage.clear();
+      }
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function (event) {
+         if (event.target == modal) {
+            modal.style.display = "none";
+            localStorage.clear();
+         }
+      }
+   </script>
+
+   <script>
+      // Get the modal
+      const modal2 = document.getElementById("myModal2");
+      // Get the button that opens the modal
+      const btn2 = document.getElementById("myBtn2");
+      // Get the <span> element that closes the modal
+      const span2 = document.getElementsByClassName("close2")[0];
+
+      // When the user clicks the button, open the modal 
+      btn2.onclick = function () {
+         modal2.style.display = "block";
+      }
+
+      // When the user clicks on <span> (x), close the modal
+      span2.onclick = function () {
+         modal2.style.display = "none";
+         localStorage.clear();
+      }
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function (event) {
+         if (event.target == modal2) {
+            modal2.style.display = "none";
+            localStorage.clear();
+         }
+      }
+   </script>
+
+
+   <script>
+      let sizeList = [];
+      const todo = document.getElementById("todo");
+
+      function addTodo() {
+         // get input
+         const size = document.getElementById("size").value;
+         const quantity = document.getElementById("quantity").value;
+         // return if nothing was entered
+         if (!size || !quantity) return;
+         // add the new task to todo list
+         sizeList.push({
+            size: size,
+            quantity: quantity,
+         });
+
+         // add the todo list to localstorage
+         localStorage.setItem("sizes", JSON.stringify(sizeList));
+         // render todo list
+      }
+
+      function Read() {
+         // clear the list
+         todo.innerHTML = null;
+
+         const sizes = localStorage.getItem("sizes");
+         sizeList = JSON.parse(sizes) || [];
+         const details = document.getElementById("details").value = sizes;
+
+         if (sizeList != null) {
+            for (let index = 0; index < sizeList.length; index++) {
+               todo.innerHTML += ` 
+               <tr>
+                  <td>${sizeList[index].size}</td>
+                  <td>${sizeList[index].quantity}</td>
+               </tr>
+                  `
+            }
+         }
+
+      }
+   </script>
+</body>
+
+</html>

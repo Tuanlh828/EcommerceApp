@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Toast Notification</title>
+   <!-- ToastNotification -->
+   <link rel="stylesheet" href="../../public/css/toast.notification.css">
+   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+   <div class="buttons">
+      <button onclick="showToast(successMsg)">Success</button>
+      <button onclick="showToast(errorMsg)">Error</button>
+      <button onclick="showToast(invalidMsg)">Invalid</button>
+   </div>
+
+   <div id="toastBox"></div>
+   <script src="../../public/js/ToastNotification.js"></script>
+   <!-- <script>
+      let toastBox = document.getElementById("toastBox")
+      let successMsg = '<ion-icon name="checkmark-circle-outline"></ion-icon>Successfully submitted';
+      let errorMsg = '<ion-icon name="close-circle-outline"></ion-icon>Please fix the error!';
+      let invalidMsg = '<ion-icon name="alert-circle-outline"></ion-icon>Invalid input, check again';
+
+      function showToast(msg) {
+         let toast = document.createElement('div');
+         toast.classList.add('toast');
+         toast.innerHTML = msg;
+         toastBox.appendChild(toast);
+
+         if (msg.includes('error')) {
+            toast.classList.add('error');
+         }
+         if (msg.includes('Invalid')) {
+            toast.classList.add('invalid');
+         }
+         setTimeout(() => {
+            toast.remove();
+         }, 2000);
+      }
+   </script> -->
+</body>
+
+</html>

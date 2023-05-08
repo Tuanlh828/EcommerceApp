@@ -1,0 +1,90 @@
+* {
+   margin: 0 auto;
+   padding: 0;
+   box-sizing: border-box;
+   font-family: 'Poppins', sans-serif;
+}
+
+.container {
+   width: 100%;
+   height: 100vh;
+   display: inline-block;
+   align-items: center;
+   justify-content: center;
+}
+
+.input-group {
+   width: 90%;
+   max-width: 600px;
+   position: relative;
+   margin-top: 60px
+}
+
+#email-field {
+   display: block;
+   margin: 0 auto;
+   width: 70%;
+   border: 0;
+   border-bottom: 2px solid #555;
+   background: transparent;
+   outline: none;
+   font-size: 20px;
+   padding: 5px 2px;
+   position: relative;
+   z-index: 10;
+}
+
+#email-label {
+   display: block;
+   position: absolute;
+   bottom: 5px;
+   left: 20px;
+   color: #777;
+   font-size: 16px;
+   transition: bottom 0.2s;
+}
+
+#email-error {
+   position: absolute;
+   top: 100%;
+   left: 70px;
+   font-size: 16px;
+   font-weight: 400;
+   color: red;
+   transition: top 0.5s;
+}
+
+#password-field {
+   display: block;
+   margin: 0 auto;
+   margin-top: 10px;
+   width: 70%;
+   border: 0;
+   border-bottom: 2px solid #555;
+   background: transparent;
+   outline: none;
+   font-size: 20px;
+   padding: 5px 2px;
+   position: relative;
+   z-index: 10;
+}
+
+#password-label {
+   display: block;
+   position: absolute;
+   bottom: 5px;
+   left: 20px;
+   color: #777;
+   font-size: 16px;
+   transition: bottom 0.2s;
+}
+
+#password-error {
+   position: absolute;
+   top: 100%;
+   left: 2px;
+   font-size: 16px;
+   font-weight: 400;
+   color: red;
+   transition: top 0.5s;
+}
