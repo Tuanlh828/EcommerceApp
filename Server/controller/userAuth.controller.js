@@ -8,32 +8,29 @@ const User = require('../models/User')
 //@access public
 const registerUser = async (req, res, next) => {
    const { username, email, password } = req.body;
-   if (!username || !email || !password) {
-      res.status(400);
-      throw new Error('All fields are mandatory!');
-   }
-   const userAvailable = await User.findOne({ email });
-   if (userAvailable) {
-      res.status(400);
-      throw new Error('User already registered!');
-   }
-
-   //HASH PASSWORD
    const hashedPassword = await bcrypt.hash(password, 10);
-   console.log("Hashed Password: ", hashedPassword);
-   const user = await User.create({
-      username,
-      email,
-      password: hashedPassword,
+
+   const newUser = new User({
+      username: req.body.username,
+      email: req.body.email,
+      password: hashedPassword
    });
 
-   console.log(`User created ${user}`);
-   if (user) {
-      res.status(201).json({ _id: user.id, email: user.email });
-   } else {
-      res.status(400);
-      throw new Error('User data us not valid');
-   }
+   User.findOne({ email: email })
+      .then(
+         async (savedUser) => {
+            if (savedUser) {
+               return res.status(422).send({ error: "The email has already been used" });
+            }
+            try {
+               await newUser.save()
+               res.send({ message: "User saved successfully" });
+            } catch (error) {
+               console.log("db err", error);
+               return res.status(422).send({ error: error.message });
+            }
+         }
+      )
 };
 
 //@desc Login a user
@@ -44,8 +41,14 @@ const loginUser = async (req, res, next) => {
    if (!email || !password) {
       res.status(400);
    }
-   const user = await User.findOne({ email });
-   if (user && (await bcrypt.compare(password, user.password))) {
+   const user = await User.findOne({ where: { email } }).catch(
+      (err) => {
+         console.log("Error", err);
+      }
+   );
+
+   // kiểm tra thông tin đăng nhập
+   if (user && (await bcrypt.compare(password, user.password)) && user.isAdmin == true) {
       const accessToken = jwt.sign({
          user: {
             username: user.username,
@@ -56,22 +59,14 @@ const loginUser = async (req, res, next) => {
          { expiresIn: 30 });
       res.cookie("token", accessToken, { httpOnly: true })
       return res.redirect('/dashboard');
-
-      // .send({
-      //    user: {
-      //       id: user._id,
-      //       email: user.email,
-      //    },
-      //    message: "Login successfull",
-      //    accessToken: accessToken,
-      // });
-
-      // res.redirect('/dashboard')
-   } else {
-      res.render('login', { success: false });
+      // nếu ko phải là quản trị viên
+   } else if (user.isAdmin !== true) {
+      res.status(403).json({ message: 'You are not authorized' });
    }
-};
-
+   else {
+      res.render('login', { success: false });
+   };
+}
 const validateToken = async (req, res, next) => {
    let token = req.params.token; let authHeader = req.headers.Authorization || req.headers.authorization;
    if (authHeader && authHeader.startsWith('Bearer')) {
@@ -111,8 +106,6 @@ const cookieJwtAuth = (req, res, next) => {
       return res.redirect("/");
    }
 }
-
-
 
 module.exports = { registerUser, loginUser, currentUser, validateToken, cookieJwtAuth };
 
