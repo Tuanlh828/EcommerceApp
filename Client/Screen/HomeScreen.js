@@ -36,7 +36,6 @@ const HomeScreen = ({ navigation }) => {
             setProductList(response.data)
          )
    })
-   console.log(productList)
    useEffect(() => {
       getAllProducts();
    }, [])
@@ -56,6 +55,7 @@ const HomeScreen = ({ navigation }) => {
       );
    };
 
+   // Item 
    const Card = ({ item, index }) => {
       return (
          <TouchableOpacity
@@ -124,7 +124,7 @@ const HomeScreen = ({ navigation }) => {
                   Fashions Shop
                </Text>
             </View>
-            <Icon name="shopping-cart" size={28} />
+            <Icon name="shopping-cart" size={28} onPress={()=>navigation.navigate('CartScreen')}/>
          </View>
          <View style={{ marginTop: 30, flexDirection: 'row' }}>
             <View style={styles.searchContainer}>

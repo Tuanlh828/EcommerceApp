@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, Image, View, Text, ImageBackground } from 'react-native';
 import Colors from '../src/themes/Color'
 
+
 import Logo from '../src/img/shopping.png'
 const SplashScreen = ({ navigation }) => {
    setTimeout(() => {

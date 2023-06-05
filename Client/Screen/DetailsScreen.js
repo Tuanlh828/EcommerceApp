@@ -11,9 +11,8 @@ const DetailsScreen = ({ navigation, route }) => {
    const [num, setNum] = useState(1);
    const [product, setProduct] = useState({});
    const [size, setSize] = useState();
-   const [sizeIndex, setSizeIndex] = useState(0);
+   const [sizeIndex, setSizeIndex] = useState();
    const [sizeName, setSizeName] = useState();
-
 
    const incrementNumber = (num) => {
       if (num >= 1) {
@@ -44,12 +43,13 @@ const DetailsScreen = ({ navigation, route }) => {
       });
    }
 
-   const themSPgiohang = async (item, num) => {
-      const itemCart = {
+   const themSPgiohang = async (item, num, sizeName) => {
+      let itemCart = {
+         id: item._id,
          sp: item.title,
          url_Image: item.img,
          size: sizeName,
-         soLuong: 1,
+         soLuong: num,
          giaTien: item.price
       }
 
@@ -57,14 +57,12 @@ const DetailsScreen = ({ navigation, route }) => {
       await AsyncStorage.getItem('cart').then((data) => {
          if (data !== null) {
 
-            let cart = JSON.parse(data);
-            const check = cart.filter(item => item.sp._id == itemCart.sp._id)[0]
+            var cart = JSON.parse(data);
+            const check = cart.filter(item => item.sp.size == itemCart.size)[0]
             if (check) {
                cart = cart.map((item) => {
-                  console.log("item check" + JSON.stringify(item));
-                  // console.log("cart check" + JSON.stringify(cart));
-                  if (item.sp._id == itemCart.sp._id) {
-                     item = { ...item, soLuong: item.soLuong + 1 }
+                  if (item.sp.size == itemCart.size) {
+                     item = { ...item, soLuong: item.soLuong + num }
                   }
                   return item
                })
@@ -85,19 +83,9 @@ const DetailsScreen = ({ navigation, route }) => {
             console.log(err);
          })
    }
-
-   const onClickRemoveCart = (data, index) => {
-      const keys = ['cart']
-      try {
-         AsyncStorage.multiRemove(keys)
-      } catch (e) {
-         // remove error
-         console.log(e)
-      }
-   }
+  
 
    const SizeList = ({ item }) => {
-      console.log(item);
       if (!item) {
 
       } else {
@@ -135,8 +123,8 @@ const DetailsScreen = ({ navigation, route }) => {
    return (
       <SafeAreaView style={{ flex: 1, backgroundColor: Colors }}>
          <View style={style.header}>
-            <Icon name="arrow-back" size={28} onPress={() => { navigation.goBack(), onClickRemoveCart() }} color={Colors.dark} />
-            <Icon name="shopping-cart" size={28} onPress={() => checkThongtinGioHang()} color={Colors.dark} />
+            <Icon name="arrow-back" size={28} onPress={() => { navigation.goBack() }} color={Colors.dark} />
+            {/* <Icon name="shopping-cart" size={28} onPress={() => checkThongtinGioHang()} color={Colors.dark} /> */}
          </View>
 
          <View style={style.imageContainer}>
@@ -202,7 +190,7 @@ const DetailsScreen = ({ navigation, route }) => {
                      </View>
                   </View>
                   <View style={style.buyBtn}>
-                     <TouchableOpacity onPress={() => themSPgiohang(product, num)} >
+                     <TouchableOpacity onPress={() => themSPgiohang(product, num, sizeName)} >
                         <Text style={{ color: Colors.white, fontSize: 16, fontWeight: 'bold' }}>
                            Thêm vào giỏ hàng
                         </Text>
