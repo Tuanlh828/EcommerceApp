@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 
 router.post('/register', async (req, res) => {
    const { username, email, password } = req.body;
+   var validRegex = /^.+\@.+\..+$/;
    const hashedPassword = await bcrypt.hash(password, 10);
 
    const newUser = new User({
@@ -18,14 +19,18 @@ router.post('/register', async (req, res) => {
       .then(
          async (savedUser) => {
             if (savedUser) {
-               return res.status(422).send({ error: "The email has already been used" });
+               return res.status(422).json("Email already used");
+            } else if (req.body.username == '' || req.body.email == '' || req.body.password == '') {
+               return res.status(400).json("Please fill in the input text")
+            } else if (!validRegex.test(req.body.email)) {
+               return res.status(400).json("Invalid email")
             }
             try {
                await newUser.save()
-               res.send({ message: "User saved successfully" });
+               res.send("User saved successfully");
             } catch (error) {
-               console.log("db err", error);
-               return res.status(422).send({ error: error.message });
+               console.log("db err", error.message);
+               return res.status(422).json(error);
             }
          }
       )
@@ -53,7 +58,7 @@ router.post("/login", async (req, res) => {
          .status(400)
          .json({ message: "Email or password does not match!2" });
    }
-   const validPassword = await bcrypt.compare(password, userWithEmail.password,);
+   const validPassword = await bcrypt.compare(password, userWithEmail.password);
    console.log(validPassword);
    if (!validPassword) {
       return res
@@ -65,6 +70,6 @@ router.post("/login", async (req, res) => {
       { id: userWithEmail.id, email: userWithEmail.email },
       process.env.ACCESS_TOKEN_SECRET
    );
-   res.json({ message: "Welcome Back!", token: jwtToken });
+   res.json({ message: "Success", token: jwtToken, user_id: userWithEmail.id });
 })
 module.exports = router;

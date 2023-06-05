@@ -1,16 +1,14 @@
 const mongoose = require('mongoose')
 
 const UserSchema = new mongoose.Schema({
-   username: {
-      type: String, required: 'please enter your username', trim: true
-   },
+   username: { type: String, required: [true, "name required"] },
    email: {
       type: String,
-      required: 'please enter your email',
-      unique: [true, "Email address already taken"],
-
+      required: [true, 'Vui lòng điền email'],
+      unique: [true, "Email đã được sử dụng"],
+      match: [/^.+\@.+\..+$/, "Vui lòng nhập đúng định dạng email"]
    },
-   password: { type: String, required: [true, 'please enter your password'] },
+   password: { type: String, required: true },
    isAdmin: {
       type: Boolean,
       default: false,

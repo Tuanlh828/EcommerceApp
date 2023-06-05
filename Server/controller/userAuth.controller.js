@@ -56,12 +56,12 @@ const loginUser = async (req, res, next) => {
             id: user.id,
          }
       }, process.env.ACCESS_TOKEN_SECRET,
-         { expiresIn: 30 });
+         { expiresIn: 30 }); yy
       res.cookie("token", accessToken, { httpOnly: true })
       return res.redirect('/dashboard');
       // nếu ko phải là quản trị viên
    } else if (user.isAdmin !== true) {
-      res.status(403).json({ message: 'You are not authorized' });
+      res.render('login', { success: false, message: 'you' });
    }
    else {
       res.render('login', { success: false });

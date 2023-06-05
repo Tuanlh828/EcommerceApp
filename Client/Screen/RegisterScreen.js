@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, Button, ImageBackground, Dimensions, StyleSheet, TextInput, Image } from 'react-native';
+import { View, Text, Button, ImageBackground, Dimensions, StyleSheet, TextInput, Image, ToastAndroid, ScrollView } from 'react-native';
 import Colors from '../src/themes/Color';
 import Logo from '../src/img/shopping.png'
-import axios from 'axios';
 
+//import libary
+import axios from 'axios';
+import Toast from 'react-native-toast-message';
+
+// require module
+// import { NetworkInfo } from "react-native-network-info";
+
+// Get IPv4 IP
+// const ipv4Address = await NetworkInfo.getIPV4Address();
 
 const IPv4 = "192.168.1.18";
 
-
-
 const RegisterScreen = ({ navigation }) => {
-
    const [user, setUser] = useState({
       email: "",
       password: "",
       username: "",
    });
-   console.log(user);
+
+
 
    const OnChangeHandler = (value, name) => {
       setUser({
@@ -33,8 +39,43 @@ const RegisterScreen = ({ navigation }) => {
       }
       axios.post("http://" + IPv4 + ":5000/api/register", user)
          .then(res => console.log(res.json()))
-         .catch((err) => console.log(err))
-      //Button onpress() => onPress={() => { loginHandle(data.username, data.password) }}
+         .catch((err) => {
+            if (err.response) {
+               console.log(err.response.data);
+               Toast.show({
+                  type: 'error',
+                  text1: 'Error',
+                  text2: err.response.data,
+                  position: 'top',
+                  visibilityTime: 3000,
+               });
+               // console.log(err.response.data);
+               console.log(err.response.status);
+               // console.log(err.response.headers);
+            } else if (err.request) {
+               Toast.show({
+                  type: 'info',
+                  text1: 'Error request',
+                  text2: err.message,
+                  position: 'top',
+                  visibilityTime: 3000,
+
+               });
+               console.log(err.request.status);
+            } else {
+               // Đăng nhập thành công
+               Toast.show({
+                  type: 'success',
+                  text1: 'Thành công',
+                  position: 'top',
+                  visibilityTime: 2000,
+               });
+               setTimeout(() => {
+                  navigation.navigate('LoginScreen')
+               }, 2000);
+            }
+            console.log(err.config);
+         })
    }
 
    return (
@@ -68,6 +109,7 @@ const RegisterScreen = ({ navigation }) => {
                }}>
 
                   <TextInput
+                     autoFocus={true}
                      placeholderTextColor={'gray'}
                      placeholder='email'
                      textContentType='emailAddress'
@@ -82,6 +124,7 @@ const RegisterScreen = ({ navigation }) => {
                }}>
 
                   <TextInput
+                     autoFocus={true}
                      placeholderTextColor={'gray'}
                      placeholder='password'
                      secureTextEntry={true}
@@ -97,6 +140,7 @@ const RegisterScreen = ({ navigation }) => {
                }}>
 
                   <TextInput
+                     autoFocus={true}
                      placeholderTextColor={'gray'}
                      placeholder='fullname'
                      textContentType='name'
@@ -120,6 +164,7 @@ const RegisterScreen = ({ navigation }) => {
                />
             </View>
          </View>
+         <Toast />
       </ScrollView>
    );
 };
