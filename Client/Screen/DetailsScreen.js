@@ -56,7 +56,7 @@ const DetailsScreen = ({ navigation, route }) => {
 
       await AsyncStorage.getItem('cart').then((data) => {
          if (data !== null) {
-
+            console.log(data);
             var cart = JSON.parse(data);
             const check = cart.filter(item => item.sp.size == itemCart.size)[0]
             if (check) {
@@ -207,7 +207,7 @@ const DetailsScreen = ({ navigation, route }) => {
 
 const style = StyleSheet.create({
    header: {
-      paddingHorizontal: 20,
+      paddingHorizontal: 10,
       marginTop: 20,
       flexDirection: "row",
       justifyContent: "space-between",
