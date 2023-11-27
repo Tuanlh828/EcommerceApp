@@ -5,12 +5,11 @@ import {
 import Colors from '../src/themes/Color';
 import Logo from '../src/img/shopping.png'
 import RegisterScreen from './RegisterScreen';
-
+import ipv4 from '../src/config/ipConfig';
 //import libary
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 
-const IPv4 = "192.168.1.18";
 const LoginScreen = ({ navigation }) => {
 
    const [data, setData] = useState({
@@ -28,7 +27,7 @@ const LoginScreen = ({ navigation }) => {
    const login = (email, password) => {
       const params = JSON.stringify({ email: email, password: password })
 
-      axios.post("http://" + IPv4 + ":5000/api/login", params,
+      axios.post("http://" + ipv4 + ":5000/api/login", params,
          {
             "headers": { "content-type": "application/json" }
          }
@@ -41,7 +40,7 @@ const LoginScreen = ({ navigation }) => {
                   text1: 'Error',
                   text2: err.response.data,
                   position: 'top',
-                  visibilityTime: 3000,
+                  visibilityTime: 2000,
                });
 
                console.log(err.response.data);
@@ -52,14 +51,14 @@ const LoginScreen = ({ navigation }) => {
                   text1: 'Error request',
                   text2: err.message,
                   position: 'top',
-                  visibilityTime: 3000,
+                  visibilityTime: 2000,
 
                });
                console.log(err.request.status);
             } else {
                setTimeout(() => {
                   navigation.navigate('HomeScreen')
-               }, 2000);
+               }, 1000);
                console.log('Error', err.request);
             }
             console.log(err.config);

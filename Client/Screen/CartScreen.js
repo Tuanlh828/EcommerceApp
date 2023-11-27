@@ -22,11 +22,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
+
+import ipv4 from '../src/config/ipConfig';
 const CartScreen = ({navigation, route}) => {
-  const IPv4 = '192.168.1.18';
   const [cart, setCart] = useState([]);
   var data = cart;
-  console.log(data[0]);
   const [quantity, setQuantity] = useState();
 
   useEffect(() => {
@@ -56,13 +56,16 @@ const CartScreen = ({navigation, route}) => {
       quant = quant + 1;
       dataCar[i].soLuong = quant;
       setCart(dataCar);
+      AsyncStorage.setItem('cart', JSON.stringify(dataCar));
     } else if (type == false && quant >= 2) {
       quant = quant - 1;
       dataCar[i].soLuong = quant;
       setCart(dataCar);
+      AsyncStorage.setItem('cart', JSON.stringify(dataCar));
     } else if (type == false && quant == 1) {
       dataCar.splice(i, 1);
       setCart(dataCar);
+      AsyncStorage.setItem('cart', JSON.stringify(dataCar));
     }
   };
   const xoaGioHang = () => {
@@ -112,7 +115,7 @@ const CartScreen = ({navigation, route}) => {
       <ScrollView>
         {data.map((item, index) => {
           return (
-            <SafeAreaView style={style.card}>
+            <SafeAreaView style={style.card} key={item.id}>
               <View style={{flexDirection: 'row', margin: 5}} key={index}>
                 {/* Image */}
                 <View
@@ -127,8 +130,7 @@ const CartScreen = ({navigation, route}) => {
                   <Image
                     source={{
                       uri:
-                        'http://192.168.1.18:5000/uploads/images/' +
-                        item.url_Image,
+                        'http://'+ ipv4 +':5000/uploads/images/' + item.url_Image,
                     }}
                     resizeMode="contain"
                     style={{
@@ -169,7 +171,7 @@ const CartScreen = ({navigation, route}) => {
                         // color: Colors.dark,
                         fontWeight: 'normal',
                       }}>
-                      {item.giaTien.toLocaleString() + 'đ'}
+                      {item.giaTien.toLocaleString()}đ
                     </Text>
                   </View>
 
@@ -212,7 +214,7 @@ const CartScreen = ({navigation, route}) => {
             justifyContent: 'space-between',
             flexDirection: 'row',
             borderBottomColor: 'black',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+            borderBottomWidth: StyleSheet.hairlineWidth,
           }}>
           <Text style={style.title}>Tổng:</Text>
 
@@ -248,7 +250,7 @@ const CartScreen = ({navigation, route}) => {
           />
           <Text style={style.subTitle}>ÁP DỤNG</Text>
         </View>
-        <Button title="Mua Hàng" style={style.buttons} color="green" />
+        <Button title="Đặt Hàng" style={style.buttons} color="green" />
       </View>
     </View>
   );

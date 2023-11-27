@@ -2,18 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, ImageBackground, Dimensions, StyleSheet, TextInput, Image, ToastAndroid, ScrollView } from 'react-native';
 import Colors from '../src/themes/Color';
 import Logo from '../src/img/shopping.png'
+import ipv4 from '../src/config/ipConfig'
 
 //import libary
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
-
-// require module
-// import { NetworkInfo } from "react-native-network-info";
-
-// Get IPv4 IP
-// const ipv4Address = await NetworkInfo.getIPV4Address();
-
-const IPv4 = "192.168.1.18";
 
 const RegisterScreen = ({ navigation }) => {
    const [user, setUser] = useState({
@@ -37,7 +30,7 @@ const RegisterScreen = ({ navigation }) => {
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify({ email, password, username })
       }
-      axios.post("http://" + IPv4 + ":5000/api/register", user)
+      axios.post("http://" + ipv4 + ":5000/api/register", user)
          .then(res => console.log(res.json()))
          .catch((err) => {
             if (err.response) {

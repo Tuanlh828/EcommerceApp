@@ -5,9 +5,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import ipv4 from '../src/config/ipConfig'
 const DetailsScreen = ({ navigation, route }) => {
    const id = route.params.id
-   const IPv4 = "192.168.1.18";
    const [num, setNum] = useState(1);
    const [product, setProduct] = useState({});
    const [size, setSize] = useState();
@@ -109,7 +110,7 @@ const DetailsScreen = ({ navigation, route }) => {
       }
    };
    const getProductById = (() => {
-      axios.get("http://" + IPv4 + ":5000/api/products/find/" + id)
+      axios.get("http://" + ipv4 + ":5000/api/products/find/" + id)
          .then(response => {
             setProduct(response.data)
             setSize(response.data.details)
@@ -128,7 +129,7 @@ const DetailsScreen = ({ navigation, route }) => {
          </View>
 
          <View style={style.imageContainer}>
-            <Image source={{ uri: "http://" + IPv4 + ':5000/uploads/images/' + product.img }} style={{ resizeMode: 'contain', flex: 1, width: '100%', height: '100%' }} />
+            <Image source={{ uri: "http://" + ipv4 + ':5000/uploads/images/' + product.img }} style={{ resizeMode: 'contain', flex: 1, width: '100%', height: '100%' }} />
          </View>
 
          <View style={style.detailsContainer}>
@@ -155,7 +156,7 @@ const DetailsScreen = ({ navigation, route }) => {
                      color: Colors.white,
                      fontWeight: 'bold',
                      fontSize: 14,
-                  }}>{product.price}đ</Text>
+                  }}>{product.price?.toLocaleString()}đ</Text>
                </View>
             </View>
             <View style={{ paddingHorizontal: 20, marginTop: 10, }}>
@@ -185,10 +186,12 @@ const DetailsScreen = ({ navigation, route }) => {
                      </Text>
                      <View style={style.borderBtn}>
                         <TouchableOpacity onPress={() => incrementNumber(num)}>
+                           {console.log('asdsad')}
                            <Text style={style.borderBtnText}> + </Text>
                         </TouchableOpacity>
                      </View>
                   </View>
+
                   <View style={style.buyBtn}>
                      <TouchableOpacity onPress={() => themSPgiohang(product, num, sizeName)} >
                         <Text style={{ color: Colors.white, fontSize: 16, fontWeight: 'bold' }}>
