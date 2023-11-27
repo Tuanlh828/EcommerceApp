@@ -7,18 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 const Tab = createBottomTabNavigator();
 
 import HomeScreen from '../HomeScreen'
-
-function Profile({ navigation }) {
-   return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-         <Text>Profile Screen</Text>
-         <Button
-            onPress={() => navigation.navigate('EditPost')}
-            title="Go to Edit Post"
-         />
-      </View>
-   );
-}
+import OrderScreen from '../OrderScreen'
 
 function EmptyScreen() {
    return <View />;
@@ -29,17 +18,17 @@ const Home = () => {
       <Tab.Navigator screenOptions={{
          headerShown: false
       }}>
-         <Tab.Screen name="shop" component={HomeScreen}
+         <Tab.Screen name="Home" component={HomeScreen}
             options={{
                tabBarIcon: ({ color, size }) => (
-                  <MaterialCommunityIcons name="cart" color={color} size={size} />
+                  <MaterialCommunityIcons name="shopping" color={color} size={size} />
                ),
             }}
          />
-         <Tab.Screen name="Profile" component={Profile}
+         <Tab.Screen name="Hóa đơn" component={OrderScreen}
             options={{
                tabBarIcon: ({ color, size }) => (
-                  <MaterialCommunityIcons name="account" color={color} size={size} />
+                  <MaterialCommunityIcons name="basket" color={color} size={size} />
                ),
             }}
          />
