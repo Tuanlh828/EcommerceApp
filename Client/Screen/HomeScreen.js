@@ -12,12 +12,13 @@ import {
    Dimensions,
 } from 'react-native';
 
+import Colors from '../src/themes/Color';
+import ipv4 from '../src/config/ipConfig'
+
 import axios from 'axios';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import Colors from '../src/themes/Color';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { FlatList } from 'react-native-gesture-handler';
-import item from '../src/data/plant';
 const width = Dimensions.get('screen').width / 2 - 30;
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Tab = createMaterialBottomTabNavigator();
@@ -28,9 +29,8 @@ const HomeScreen = ({ navigation }) => {
 
    const [productList, setProductList] = useState();
 
-   const IPv4 = "192.168.1.18";
    const getAllProducts = (() => {
-      axios.get("http://" + IPv4 + ":5000/api/products")
+      axios.get("http://" + ipv4 + ":5000/api/products")
          .then(response =>
             // console.log("response", response.data),
             setProductList(response.data)
@@ -84,7 +84,7 @@ const HomeScreen = ({ navigation }) => {
                <View style={{ height: 100, alignItems: 'center' }}>
                   <Image
                      style={{ flex: 1, width: 100, height: 100, resizeMode: 'contain' }}
-                     source={{ uri: "http://" + IPv4 + ':5000/uploads/images/' + item.img }} />
+                     source={{ uri: "http://" + ipv4 + ':5000/uploads/images/' + item.img }} />
                </View>
                <Text style={{ fontSize: 15, marginTop: 10, color: Colors.dark }}>
                   {item.title}
@@ -95,7 +95,7 @@ const HomeScreen = ({ navigation }) => {
                      justifyContent: 'space-between',
                      marginTop: 5,
                   }}>
-                  <Text style={{ fontSize: 14, color: Colors.dark }}>{item.price}đ</Text>
+                  <Text style={{ fontSize: 14, color: Colors.dark }}>{item.price.toLocaleString()} đ</Text>
                   <View
                      style={{
                         height: 25,
