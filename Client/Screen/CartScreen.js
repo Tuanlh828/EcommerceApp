@@ -29,6 +29,7 @@ const CartScreen = ({navigation, route}) => {
   var data = cart;
   const [quantity, setQuantity] = useState();
 
+  console.log(cart);
   useEffect(() => {
     getData();
   }, []);
@@ -51,7 +52,6 @@ const CartScreen = ({navigation, route}) => {
   const onChangeQuantity = (i, type) => {
     const dataCar = cart.slice();
     let quant = dataCar[i].soLuong;
-    console.log(dataCar);
     if (type) {
       quant = quant + 1;
       dataCar[i].soLuong = quant;
@@ -109,14 +109,15 @@ const CartScreen = ({navigation, route}) => {
             navigation.goBack();
           }}
         />
+        <Text style={style.title}>Giỏ hàng</Text>
         <Icon name="delete" size={28} onPress={() => xoaGioHang()} />
       </View>
 
       <ScrollView>
         {data.map((item, index) => {
           return (
-            <SafeAreaView style={style.card} key={item.id}>
-              <View style={{flexDirection: 'row', margin: 5}} key={index}>
+            <SafeAreaView style={style.card} key={index}>
+              <View style={{flexDirection: 'row', margin: 5}} >
                 {/* Image */}
                 <View
                   style={{

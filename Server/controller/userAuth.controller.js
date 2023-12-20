@@ -16,7 +16,7 @@ const registerUser = async (req, res, next) => {
       password: hashedPassword
    });
 
-   User.findOne({ email: email })
+   await User.findOne({ email: email })
       .then(
          async (savedUser) => {
             if (savedUser) {
@@ -56,36 +56,37 @@ const loginUser = async (req, res, next) => {
             id: user.id,
          }
       }, process.env.ACCESS_TOKEN_SECRET,
-         { expiresIn: 30 }); yy
+         { expiresIn: '24h' });
       res.cookie("token", accessToken, { httpOnly: true })
       return res.redirect('/dashboard');
+   
       // nếu ko phải là quản trị viên
    } else if (user.isAdmin !== true) {
-      res.render('login', { success: false, message: 'you' });
+      res.render('login');
    }
    else {
-      res.render('login', { success: false });
+      res.render('login');
    };
 }
-const validateToken = async (req, res, next) => {
-   let token = req.params.token; let authHeader = req.headers.Authorization || req.headers.authorization;
-   if (authHeader && authHeader.startsWith('Bearer')) {
-      token = authHeader.split(' ')[1]; jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+// const validateToken = async (req, res, next) => {
+//    let token = req.params.token; let authHeader = req.headers.Authorization || req.headers.authorization;
+//    if (authHeader && authHeader.startsWith('Bearer')) {
+//       token = authHeader.split(' ')[1]; jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
 
-         if (err) {
-            res.status(401).json(err);
-            throw new Error("User is not authorized");
-         }
-         req.user = decoded.user;
-         next();
-      });
+//          if (err) {
+//             res.status(401).json(err);
+//             throw new Error("User is not authorized");
+//          }
+//          req.user = decoded.user;
+//          next();
+//       });
 
-      if (!token) {
-         res.status(401).json("User is not authorized or token is missing");
-         throw new Error("User is not authorized or token is missing");
-      }
-   }
-}
+//       if (!token) {
+//          res.status(401).json("User is not authorized or token is missing");
+//          throw new Error("User is not authorized or token is missing");
+//       }
+//    }
+// }
 
 //@desc Current a user
 //@route GET /current
@@ -107,5 +108,5 @@ const cookieJwtAuth = (req, res, next) => {
    }
 }
 
-module.exports = { registerUser, loginUser, currentUser, validateToken, cookieJwtAuth };
+module.exports = { registerUser, loginUser, currentUser,  cookieJwtAuth };
 

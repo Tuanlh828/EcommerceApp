@@ -24,7 +24,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Tab = createMaterialBottomTabNavigator();
 
 const HomeScreen = ({ navigation }) => {
-   const categories = ["POPULAR", "ORGANIC", "INDOORS", "SYNTHETIC"];
+   const categories = ["ÁO", "QUẦN", "GIÀY", "PHỤ KIỆN"];
    const [categoryIndex, setcategoryIndex] = useState(0);
 
    const [productList, setProductList] = useState();
@@ -135,7 +135,7 @@ const HomeScreen = ({ navigation }) => {
                <Icon name="sort" size={30} color={Colors.white} />
             </View>
          </View>
-         <CategoryList />
+         {/* <CategoryList /> */}
          <FlatList
             columnWrapperStyle={{ justifyContent: 'space-between' }}
             showsVerticalScrollIndicator={false}
@@ -143,6 +143,7 @@ const HomeScreen = ({ navigation }) => {
                marginTop: 10,
                paddingBottom: 50,
             }}
+            style={{marginTop: 20}}
             numColumns={2}
             data={productList}
             renderItem={({ item }) => {
@@ -164,7 +165,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       marginTop: 30,
       marginBottom: 20,
-      justifyContent: 'space-between',
+      justifyContent: 'space-evenly',
    },
    categoryText: { fontSize: 16, color: 'grey', fontWeight: 'bold' },
    categoryTextSelected: {

@@ -1,21 +1,40 @@
 const jwt = require('jsonwebtoken')
 // Authorization
-const verifyToken = (req, res, next) => {
-   const authHeader = req.headers.token;
+const verifyToken =async (req, res, next) => {
+   // const token = req.header('token');
+   // console.log(token);
+   // if (token) {jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
 
-   if (authHeader) {
-      const token = authHeader.split(" ")[1];
-      console.log(token)
-      jwt.verify(token, process.env.JWT_SEC, (err, user) => {
+   //       if (err) res.status(403).json({"Errors": "Token is not valid!"});
+   //       req.user = user;
+   //       console.log(err) 
+   //       return
+   //    })
+   // } else if(!token) {
+   //    return res.status(400).json({"errors": "No token Found!"});
+   // } else {
+   //    return res.status(400).json({"errors": "You are not authenticated!"});
+   // }
+   const token = req.header('auth-token')
 
-         if (err) res.status(403).json("Token is not valid!");
-         req.user = user;
-         console.log(user)
-         next();
+   if(!token){
+      return res.status(400).json({
+         "errors": [{"Msg": "No token found!"}]
       })
-   } else {
-      return res.status(401).json("You are not authenticated!");
    }
+   try {
+      let user = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+      req.user = user.email
+      next()
+   } catch (error) {
+      return res.status(400).json({
+         "errors": [
+            {"Msg": "Token invalid"},
+         ]
+      })
+      
+   }
+   
 };
 
 const verifytokenAndAuthorization = (req, res, next) => {
