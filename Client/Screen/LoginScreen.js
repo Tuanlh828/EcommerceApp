@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {
-   View, TouchableOpacity, Text, ScrollView, Button, ImageBackground, Dimensions, StyleSheet, TextInput, Image
+   View, 
+   TouchableOpacity, 
+   Text, ScrollView, 
+   Button, 
+   Alert, 
+   Dimensions, 
+   StyleSheet, 
+   TextInput, 
+   Image
 } from 'react-native';
 import Colors from '../src/themes/Color';
 import Logo from '../src/img/shopping.png'
@@ -32,36 +40,18 @@ const LoginScreen = ({ navigation }) => {
             "headers": { "content-type": "application/json" }
          }
       )
-         .then(res => console.log(res.json()))
+         .then(res => {console.log(res.json())}
+         )
          .catch((err) => {
-            if (err.response) {
-               Toast.show({
-                  type: 'error',
-                  text1: 'Error',
-                  text2: err.response.data,
-                  position: 'top',
-                  visibilityTime: 2000,
-               });
-
-               console.log(err.response.data);
-               console.log(err.response.status);
-            } else if (err.request) {
-               Toast.show({
-                  type: 'info',
-                  text1: 'Error request',
-                  text2: err.message,
-                  position: 'top',
-                  visibilityTime: 2000,
-
-               });
-               console.log(err.request.status);
-            } else {
-               setTimeout(() => {
+            console.log(err.request);
+            if(err.request) {
+               Alert.alert(' ', 'Tài khoản hoặc mật khẩu không hợp lệ!',
+                [{text: 'OK', onPress: () => console.log('OK Pressed')},]);
+            }else{
+               setTimeout(()=> {
                   navigation.navigate('HomeScreen')
-               }, 1000);
-               console.log('Error', err.request);
+               }, 500);
             }
-            console.log(err.config);
          })
    }
 
@@ -84,19 +74,21 @@ const LoginScreen = ({ navigation }) => {
          <View style={styles.bottomView}>
             {/* Welcome View */}
             <View style={{ padding: 40 }}>
-               <Text style={{ color: '#000000', fontSize: 34 }}> Welcome</Text>
-               <Text style={{ color: '#000000' }}>Don't have an account?
-                  <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
-                     <Text style={{ color: '#000000', fontStyle: 'italic', textDecorationLine: 'underline', color: Colors.Blue }}>{' '}Register now</Text>
-                  </TouchableOpacity>
+               <Text style={{ color: '#000000', fontSize: 34 }}>Xin chào</Text>
+               <Text style={{ color: '#000000' }}>Bạn chưa có tài khoản đăng ký 
+                     <Text 
+                     onPress={() => navigation.navigate('RegisterScreen')} 
+                     style={{ color: '#000000', color: Colors.Blue }}> tại đây!
+                     </Text>
                </Text>
+               
                {/* Fomr Inputs View */}
                <View style={{
                   marginTop: 10,
                   borderBottomColor: '#000000',
                   borderBottomWidth: 1,
                }}>
-                  <Text style={{ color: '#000000' }}>Email</Text>
+                  <Text style={{ color: '#000000' }}>Email:</Text>
                   <TextInput
                      onChangeText={(value) => OnChangeHandler(value, "email")}
                      autoFocus={true}
@@ -110,7 +102,7 @@ const LoginScreen = ({ navigation }) => {
                   borderBottomColor: '#000000',
                   borderBottomWidth: 1,
                }}>
-                  <Text style={{ color: '#000000' }}>Password</Text>
+                  <Text style={{ color: '#000000' }}>Mật khẩu:</Text>
                   <TextInput
                      onChangeText={(value) => OnChangeHandler(value, "password")}
                      autoFocus={true}
@@ -129,7 +121,7 @@ const LoginScreen = ({ navigation }) => {
                }}
             >
                <Button
-                  title="Sign in"
+                  title="Đăng nhập"
                   color="#00B761"
                   onPress={() => login(data.email, data.password)}
 

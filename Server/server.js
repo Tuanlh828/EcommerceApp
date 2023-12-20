@@ -8,26 +8,27 @@ const cookieParser = require("cookie-parser");
 const { errorHandler, notFound } = require("./Middleware/Error")
 
 require('dotenv').config({ path: '.env' });
-dotenv.config({ path: 'config.env' })
+dotenv.config({ path: 'config.env' });
 const PORT = process.env.PORT || 5000
 dotenv.config();
 
 app.use(cookieParser());
 app.use(morgan('tiny'));
-app.use('/public', express.static('public'))
-app.use('/uploads', express.static('uploads'))
+app.use('/public', express.static('public'));
+app.use('/uploads', express.static('uploads'));
 // parse request to body-parser
-app.use(bodyparser.urlencoded({ extended: false }))
+app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 app.use(express.json());
 
-// set view engine
-app.set("view engine", "ejs")
-// app.set('views', path.join(__dirname, 'views'))
-app.use('/views', express.static('views'))
-// load routes - SERVER
-const productServer = require('./routes/productServer')
+//  view engine setup
+app.set("view engine", "ejs");
+app.set("views","./views");
 
+app.use('/views', express.static('views'));
+
+// load routes - SERVER
+const productServer = require('./routes/productServer');
 
 // load routes - API
 const userRoute = require('./routes/userRoute');
@@ -48,7 +49,6 @@ app.use("/api/orders", orderAPI);
 // app.use(notFound);
 // app.use(errorHandler);
 
-
 app.use("/", productServer);
 app.use("/", dashboardServer);
 mongoose.connect(process.env.MONGO_URL)
@@ -56,7 +56,6 @@ mongoose.connect(process.env.MONGO_URL)
    .catch((err) => {
       console.log(err)
    });
-
 
 app.listen(PORT, () => { console.log(`Server is running on http://localhost:${PORT}`) });
 // test
