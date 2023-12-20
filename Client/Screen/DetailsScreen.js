@@ -32,18 +32,6 @@ const DetailsScreen = ({ navigation, route }) => {
       return
    }
 
-
-   const checkThongtinGioHang = async () => {
-      await AsyncStorage.getAllKeys((err, keys) => {
-         AsyncStorage.multiGet(keys, (error, stores) => {
-            stores.map((result, i, store) => {
-               console.log({ [store[i][0]]: store[i][1] });
-               return true;
-            });
-         });
-      });
-   }
-
    const themSPgiohang = async (item, num, sizeName) => {
       let itemCart = {
          id: item._id,
@@ -57,12 +45,12 @@ const DetailsScreen = ({ navigation, route }) => {
 
       await AsyncStorage.getItem('cart').then((data) => {
          if (data !== null) {
-            console.log(data);
+            // console.log(data);
             var cart = JSON.parse(data);
-            const check = cart.filter(item => item.sp.size == itemCart.size)[0]
+            const check = cart.filter(item => item.id == itemCart.id)[0]
             if (check) {
                cart = cart.map((item) => {
-                  if (item.sp.size == itemCart.size) {
+                  if (item.id == itemCart.id) {
                      item = { ...item, soLuong: item.soLuong + num }
                   }
                   return item
@@ -186,7 +174,6 @@ const DetailsScreen = ({ navigation, route }) => {
                      </Text>
                      <View style={style.borderBtn}>
                         <TouchableOpacity onPress={() => incrementNumber(num)}>
-                           {console.log('asdsad')}
                            <Text style={style.borderBtnText}> + </Text>
                         </TouchableOpacity>
                      </View>

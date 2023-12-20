@@ -56,7 +56,7 @@ router.post("/login", async (req, res) => {
    if (!userWithEmail) {
       return res
          .status(400)
-         .json({ message: "Email or password does not match!2" });
+         .json({ message: "Email or password does not match!" });
    }
    const validPassword = await bcrypt.compare(password, userWithEmail.password);
    console.log(validPassword);
@@ -70,6 +70,6 @@ router.post("/login", async (req, res) => {
       { id: userWithEmail.id, email: userWithEmail.email },
       process.env.ACCESS_TOKEN_SECRET
    );
-   res.json({ message: "Success", token: jwtToken, user_id: userWithEmail.id });
+   res.json({ message: "Success", token: jwtToken, user_id: userWithEmail.id, status: 200 });
 })
 module.exports = router;

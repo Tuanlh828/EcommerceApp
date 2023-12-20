@@ -37,7 +37,7 @@ body {
 }
 
 .navigation.active {
-   width: 100px;
+   width: 200px;
 }
 
 .navigation ul {
@@ -68,16 +68,6 @@ body {
    pointer-events: none;
 }
 
-.navigation ul li h1 {
-   position: relative;
-   display: block;
-   width: 100%;
-   display: flex;
-   text-decoration: none;
-   color: var(--white);
-   left: 5px
-}
-
 .navigation ul li a {
    position: relative;
    display: block;
@@ -87,16 +77,12 @@ body {
    color: var(--white);
 }
 
-/* .navigation ul li:hovered a, */
 .navigation ul li:hover a,
 .navigation ul li.hovered a,
 .navigation ul li.hovered2 a {
    color: var(--blue);
 }
 
-/* .navigation ul li.hovered a {
-background: var(--white);
-} */
 
 .navigation ul li a .icon {
    position: relative;
