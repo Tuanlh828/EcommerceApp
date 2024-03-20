@@ -1,131 +1,122 @@
 <!DOCTYPE html>
-<html>
-<title>E-commerce</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="../public/css/edit.css">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết đơn hàng</title>
+    <!--==  link CSS  ==--->
+    <link rel="stylesheet" type="text/css" href="../public/css/orderDetail.css">
+    <!--==  Iconscout CSS  ==--->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+</head>
 
 <body>
+    <div class="container">
+        <header>
+            CHỈNH SỬA SẢN PHẨM
+        </header>
+        <div class="form">
+            <div class="form first">
+                <div class="details personal">
+                    <form action="/update/<%= product._id %>" method="post">
+                        <span class="title">Thông tin khách hàng</span>
+                        <div class="fields">
+                            <div class="input-field">
+                                <label> Họ Tên</label>
+                                <input type="text" name="title" placeholder="Tên khách hàng"
+                                    value="<%= product.title %>">
+                            </div>
 
-   <div class="w3-container w3-blue">
-      <h2>Cập nhật sản phẩm</h2>
-   </div>
+                            <div class="input-field">
+                                <label> Giá tiền</label>
+                                <input type="number" name="price" placeholder="Giá tiền" value="<%= product.price %>">
+                            </div>
 
-   <div class="container">
+                            <div class="input-field">
+                                <label>Trạng thái</label>
+                                <select class="select" name="status">
+                                    <% if(product.status==0) {%>
+                                        <option value="0">Còn hàng</option>
+                                        <option value="1">Hết Hàng</option>
+                                        <% } else if (product.status==1) {%>
+                                            <option value="1">Hết Hàng</option>
+                                            <option value="0">Còn hàng</option>
+                                            <% } %>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="buttons">
+                            <button class="backBtn">
+                                <span class="btnText">Quay lại</span>
+                                <i class="uil uil-navigator"></i>
+                            </button>
+                            <button class="nextBtn">
+                                <span class="btnText">Xác nhận</span>
+                                <i class="uil uil-navigator"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
 
-      <h3>- Thông tin sản phẩm</h3>
+                <div class="details personal">
+                    <form action="/update-details/<%= product._id %>" method="post">
+                    <span class="title">Chi tiết đơn hàng </span>
+                        <div class="fields2row">
+                            <div class="input-field-2row">
+                                <label> Size</label>
+                                <input type="text" id="editSize" name="newSize">
+                            </div>
 
-      <form action="/update/<%= product._id %>" method="post" class="w3-container">
+                            <div class="input-field-2row">
+                                <label> Số lượng</label>
+                                <input type="number" id="editQuantity" name="newQuantity">
+                            </div>
+                        </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Size</th>
+                                <th>Số lượng</th>
+                            </tr>
+                        </thead>
 
-         <label>Tên sản phẩm</label>
-         <input class="w3-input" style="opacity: 0.7" name="title" type="text" value="<%=product.title%>">
-
-         <label>Giá tiền</label>
-         <input class="w3-input" name="price" type="text" value="<%=product.price%>">
-
-         <!-- <p>
-            <label>Trạng thái</label>
-            <% if (product.status==0) { %>
-               <input class="w3-input" type="text" value="Còn hàng">
-               <% } else if (product.status==1) { %>
-                  <input class="w3-input" type="text" value="Hết hàng">
-                  <% } %>
-         </p> -->
-         <select id="country" name="status">
-            <% if (product.status==0) { %>
-               <option value="0">Còn hàng</option>
-               <option value="1">Hết Hàng</option>
-               <% } else if (product.status !==0) {%>
-                  <option value="1">Hết Hàng</option>
-                  <option value="0">Còn hàng</option>
-                  <% } %>
-                     <!-- <option value="australia">Australia</option>
-            <option value="canada">Canada</option>
-            <option value="usa">USA</option> -->
-         </select>
-         <div class="boxButton">
-            <button class="btn-success" type="submit">Lưu</button>
-            <button class="btn-default" type="reset">Mặc định</button>
-
-         </div>
-
-      </form>
-      <hr>
-      <h3>- Kích cỡ sản phẩm</h2>
-         <table id="table">
-
-            <tr>
-               <th>Size</th>
-               <th>Số lượng </th>
-            </tr>
-
-            <tbody>
-               <% product.details.forEach(item=>{ %>
-                  <tr onclick="callme(this)">
-                     <td>
-                        <%=item.size%>
-                     </td>
-                     <td>
-                        <%=item.quantity%>
-                     </td>
-                  </tr>
-                  <% } ) %>
-            </tbody>
-
-         </table>
-         <form action="/update-details/<%= product._id %>" method="post" class="w3-container">
-
-            <label for="fname">Size</label>:</label>
-            <input type="text" id="editSize" name="newSize"><br><br>
-            <label for="lname">Số lượng:</label>
-            <input type="text" id="editQuantity" name="newQuantity"><br><br>
-            <div class="boxButton">
-               <button class="btn-success" type="submit">Lưu</button>
-               <button class="btn-default" type="reset">Mặc định</button>
+                        <tbody>
+                            <% product.details.forEach(item=>{ %>
+                                <tr onclick="callme(this)">
+                                    <td>
+                                        <%=item.size%>
+                                    </td>
+                                    <td>
+                                        <%=item.quantity%>
+                                    </td>
+                                </tr>
+                                <% } ) %>
+                        </tbody>
+                    </table>
+                    <div class="buttons">
+                        <button class="backBtn">
+                            <span class="btnText">Quay lại</span>
+                            <i class="uil uil-navigator"></i>
+                        </button>
+                        <button class="nextBtn">
+                            <span class="btnText">Xác nhận</span>
+                            <i class="uil uil-navigator"></i>
+                        </button>
+                    </div>
+                    </form>
+                </div>
             </div>
-         </form>
-
-   </div>
-
-
-
-
-   <script>
-
-      function callme(e) {
-         var tds = e.getElementsByTagName('td');
-         document.getElementById("editSize").value = tds[0].innerHTML.trim();
-         document.getElementById("editQuantity").value = tds[1].innerHTML.trim();
-
-      }
-
-      // Get the modal
-      var modal = document.getElementById("myModal");
-
-      // Get the button that opens the modal
-      var btn = document.getElementById("myBtn");
-
-      // Get the <span> element that closes the modal
-      var span = document.getElementsByClassName("close")[0];
-
-      // When the user clicks the button, open the modal 
-      btn.onclick = () => {
-         modal.style.display = "block";
-      }
-
-      // When the user clicks on <span> (x), close the modal
-      span.onclick = () => {
-         modal.style.display = "none";
-      }
-
-      // When the user clicks anywhere outside of the modal, close it
-      window.onclick = function (event) {
-         if (event.target == modal) {
-            modal.style.display = "none";
-         }
-      }
-   </script>
+            
+        </div>
+    </div>
+    <script>
+        function callme(e) {
+            var tds = e.getElementsByTagName('td');
+            document.getElementById("editSize").value = tds[0].innerHTML.trim();
+            document.getElementById("editQuantity").value = tds[1].innerHTML.trim();
+        }
+    </script>
 </body>
 
 </html>

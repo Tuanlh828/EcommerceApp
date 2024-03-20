@@ -13,6 +13,7 @@
    --gray: #f5f5f5;
    --black1: #222;
    --black2: #999;
+   --antiwhite: #faebd7;
 }
 
 body {
@@ -199,7 +200,7 @@ body {
 
 .search label ion-icon {
    position: absolute;
-   top: 0;
+   top: 5px;
    left: 10px;
    font-size: 1.2em;
 }
@@ -228,6 +229,7 @@ body {
    padding: 20px;
    display: grid;
    grid-template-columns: repeat(4, 1fr);
+   background-color: aliceblue;
 }
 
 .cardBox .card {
@@ -266,6 +268,10 @@ body {
 .cardBox .card:hover .cardName,
 .cardBox .card:hover .iconBx {
    color: var(--white)
+}
+
+.content {
+   background-color: aliceblue;
 }
 
 .details {
@@ -351,7 +357,7 @@ body {
 .status.delivered {
    padding: 2px 4px;
    background: #8de02c;
-   color: var(--white);
+   color: black;
    border-radius: 4px;
    font-size: 14px;
    font-weight: 500;
@@ -360,7 +366,7 @@ body {
 .status.pending {
    padding: 2px 4px;
    background: #f9ca3f;
-   color: var(--white);
+   color: black;
    border-radius: 4px;
    font-size: 14px;
    font-weight: 500;
@@ -369,7 +375,7 @@ body {
 .status.return {
    padding: 2px 4px;
    background: #f00;
-   color: var(--white);
+   color: black;
    border-radius: 4px;
    font-size: 14px;
    font-weight: 500;
@@ -378,7 +384,7 @@ body {
 .status.inprogress {
    padding: 2px 4px;
    background: #1795ce;
-   color: var(--white);
+   color: black;
    border-radius: 4px;
    font-size: 14px;
    font-weight: 500;

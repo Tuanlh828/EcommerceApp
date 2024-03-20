@@ -3,7 +3,6 @@ const { verifyToken, verifytokenAndAuthorization, verifytokenAndAdmin } = requir
 
 
 //CREATE
-
 router.post("/", verifyToken, async (req, res) => {
    const newCart = new Cart(req.body);
 
@@ -51,8 +50,7 @@ router.get("/find/:userId", verifytokenAndAuthorization, async (req, res) => {
    }
 });
 
-// //GET ALL
-
+//GET ALL
 router.get("/", verifytokenAndAdmin, async (req, res) => {
    try {
       const carts = await Cart.find();
@@ -61,6 +59,4 @@ router.get("/", verifytokenAndAdmin, async (req, res) => {
       res.status(500).json(err);
    }
 });
-
-
 module.exports = router;

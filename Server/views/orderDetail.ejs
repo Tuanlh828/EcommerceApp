@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Chi tiết đơn hàng</title>
+   <!--==  link CSS  ==--->
+   <link rel="stylesheet" type="text/css" href="../public/css/orderDetail.css">
+   <!--==  Iconscout CSS  ==--->
+   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+</head>
+
+<body>
+   <div class="container">
+      <% console.log(order); %>
+         <header>
+            Chi tiết đơn hàng
+         </header>
+         <form action="#">
+            <div class="form first">
+               <div class="details personal">
+                  <span class="title">Thông tin khách hàng</span>
+                  <div class="fields">
+                     <div class="input-field">
+                        <label> Họ Tên</label>
+                        <input type="text" placeholder="Tên khách hàng" value="<%= order.name %>">
+                     </div>
+
+                     <div class="input-field">
+                        <label> Số điện thoại</label>
+                        <input type="number" placeholder="Số điện thoại" value="<%= order.phone_number %>">
+                     </div>
+
+                     <div class="input-field">
+                        <label>Trạng thái</label>
+                        <select class="select">
+                           <% if(order.status==0) {%>
+                              <option value="0">Chờ xác nhận</option>
+                              <option value="1">Đang vận chuyển</option>
+                              <option value="2">Đơn hàng hoàn tất </option>
+                              <option value="3">Đơn hàng rủi ro</option>
+                              <% } else if (product.status==1) {%>
+                                 <option value="1">Đang vận chuyển</option>
+                                 <option value="2">Đơn hàng hoàn tất </option>
+                                 <option value="3">Đơn hàng rủi ro</option>
+                                 <% } else if (product.status==2) {%>
+                                    <option value="3">Đơn hàng hoàn tất </option>
+                                    <option value="4">Đơn hàng rủi ro</option>
+                                    <% } else if (product.status==3) {%>
+                                       <option value="2">Đơn hàng hoàn tất </option>
+                                       <% } else if (product.status==4) {%>
+                                          <option value="3">Đơn hàng hoàn tất </option>
+                                          <% } %>
+
+                                             <!-- <option value="australia">Australia</option>
+                           <option value="canada">Canada</option>
+                           <option value="usa">USA</option> -->
+                        </select>
+                     </div>
+                     <div class="input-field-long">
+                        <label> Địa chỉ nhận hàng</label>
+                        <input type="text" placeholder="Địa chỉ nhận hàng" value="<%= order.delivery_address %>">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="details personal">
+                  <span class="title">Chi tiết đơn hàng </span>
+                  <table>
+                     <thead>
+                        <tr>
+                           <td>Ảnh</td>
+                           <td>Size</td>
+                           <td>Số lượng</td>
+                           <td>Giá tiền</td>
+                        </tr>
+                     </thead>
+
+                     <tbody>
+                        <% order.products.forEach((item)=> {%>
+                           <tr>
+                              <td>
+                                 <img src="/uploads/images/<%= item.imgURL %>">
+                              </td>
+                              <td>
+                                 <%= item.size %>
+                              </td>
+                              <td>
+                                 <%= item.quantity %>
+                              </td>
+                              <td>
+                                 <%= item.price.toLocaleString() + 'đ' %>
+                              </td>
+                           </tr>
+                           <% }); %>
+                     </tbody>
+                  </table>
+                  <div class="totalamount">
+                     <span >Tổng tiền thanh toán: </span>
+                     <h3><%=order.total_price.toLocaleString() + 'đ' %></h3>
+                  </div>
+               </div>
+            </div>
+            <div class="buttons">
+               <button class="backBtn">
+                  <span class="btnText">Quay lại</span>
+                  <i class="uil uil-navigator"></i>
+               </button>
+               <button class="nextBtn">
+                  <span class="btnText">Xác nhận</span>
+                  <i class="uil uil-navigator"></i>
+               </button>
+            </div>
+         </form>
+   </div>
+</body>
+</html>

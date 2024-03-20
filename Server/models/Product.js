@@ -8,7 +8,8 @@ const ProductSchema = new mongoose.Schema({
    status: { type: Number, required: true },
    details: [{
       size: { type: String },
-      quantity: { type: Number }
+      quantity: { type: Number },
+      price: {type:Number}
    }],
 },
    { timestamps: true }
