@@ -34,6 +34,7 @@ const registerUser = async (req, res, next) => {
 //@access public
 const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
+
   if (!email || !password) {
     res.status(400);
   }
@@ -56,38 +57,43 @@ const loginUser = async (req, res, next) => {
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "1000" }
+      { expiresIn: "1hr" }
     );
     res.cookie("token", accessToken, { httpOnly: true });
     res.render("dashboard");
 
     // nếu ko phải là quản trị viên
-  } else if (user.isAdmin == false) {
+  } else if (typeof user.isAdmin == false) {
     res.status(401).render("login", { success: false });
     console.log(user);
   } else {
     res.status(401).render("login", { success: false });
   }
 };
-// const validateToken = async (req, res, next) => {
-//    let token = req.params.token; let authHeader = req.headers.Authorization || req.headers.authorization;
-//    if (authHeader && authHeader.startsWith('Bearer')) {
-//       token = authHeader.split(' ')[1]; jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
 
-//          if (err) {
-//             res.status(401).json(err);
-//             throw new Error("User is not authorized");
-//          }
-//          req.user = decoded.user;
-//          next();
-//       });
-
-//       if (!token) {
-//          res.status(401).json("User is not authorized or token is missing");
-//          throw new Error("User is not authorized or token is missing");
-//       }
-//    }
-// }
+const getUserById = async (req,res, next) =>{
+  try {
+      User.findOne(
+         { _id: req.params.id, }, (err, docs) => {
+            if (err) {
+               console.log("Incomplete!!! Cause data have a problem");
+               next(err)
+            } else {
+               res.status(200).json(
+                {data:
+                  {
+                    username: docs["username"],
+                    phone_number: docs["phone_number"]
+                  }
+                }
+              );
+            }
+         }
+      )
+   } catch (error) {
+      res.status(500).json(error.message)
+   }
+}
 
 //@desc Current a user
 //@route GET /current
@@ -109,4 +115,4 @@ const cookieJwtAuth = (req, res, next) => {
   }
 };
 
-module.exports = { registerUser, loginUser, currentUser, cookieJwtAuth };
+module.exports = { registerUser, loginUser, currentUser, cookieJwtAuth, getUserById };

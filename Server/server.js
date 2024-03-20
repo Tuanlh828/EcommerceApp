@@ -29,11 +29,10 @@ app.use('/views', express.static('views'));
 
 // load routes - SERVER
 const productServer = require('./routes/productServer');
-
-// load routes - API
 const userRoute = require('./routes/userRoute');
 const dashboardServer = require('./routes/dashboardServer');
-
+const orderServer = require('./routes/orderServer')
+// load routes - API
 
 const authAPI = require('./routes/API/authRoute');
 const productAPI = require('./routes/API/productRoute');
@@ -51,6 +50,7 @@ app.use("/api/orders", orderAPI);
 
 app.use("/", productServer);
 app.use("/", dashboardServer);
+app.use("/order", orderServer);
 mongoose.connect(process.env.MONGO_URL)
    .then(() => console.log("DBConnection Successfull!"))
    .catch((err) => {

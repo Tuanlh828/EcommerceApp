@@ -4,8 +4,11 @@ const { getAllProduct,
    createProduct,
    getProductById,
    updateProduct,
-   updateDetails, } = require('../controller/product.controller')
-const { cookieJwtAuth } = require('../controller/userAuth.controller')
+   updateDetails,
+   getDataJSONByID,
+   page
+} = require('../controller/product.controller')
+const { cookiJwtAuth, cookieJwtAuth } = require('../controller/userAuth.controller')
 const multer = require('multer');
 /**
  * @description UPLOAD IMAGE URL
@@ -34,7 +37,7 @@ const upload = multer({ storage: storage });
  * @description getAllProducts
  * @method GET /getAllProducts
  */
-router.get('/product', getAllProduct);
+router.get('/product', cookieJwtAuth, getAllProduct);
 
 /**
  * @description create
@@ -45,6 +48,11 @@ router.post("/add-product",upload.single("myFile"), createProduct);
  * @description getProductbyId
  */
 router.get("/product/:id", getProductById);
+
+/**
+ * @description getDataJSON
+ */
+router.get("/product/json/:id", getDataJSONByID);
 
 /**
  * @description update

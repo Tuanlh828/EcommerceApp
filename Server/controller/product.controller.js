@@ -1,10 +1,13 @@
+const { json } = require("express");
 const Product = require("../models/Product")
 const multer = require('multer');
 
+const page = async (req, res, next) => {
+   res.redirect('product');
+}
 /**
  * @description UPLOAD IMAGE URL
  */
-// Storage setting:
 let urlImage;
 const storage = multer.diskStorage({
    destination: (req, file, cb) => {
@@ -43,7 +46,6 @@ const getAllProduct = async(req, res)=>{
       }
 
       res.render('product', { product: products });
-      console.log(products);
    } catch (err) {
       console.log(err)
    }
@@ -90,8 +92,25 @@ const getProductById = async (req,res, next) =>{
            }
         )
      } catch (error) {
-        res.status(500).json(err.message)
+        res.status(500).json(error.message)
      }
+}
+
+const getDataJSONByID = async (req,res, next) =>{
+   try {
+       Product.findOne(
+          { _id: req.params.id, }, (err, docs) => {
+             if (err) {
+                console.log("Incomplete!!! Cause data have a problem");
+                next(err)
+             } else {
+                res.status(200).json(docs)
+             }
+          }
+       )
+    } catch (error) {
+       res.status(500).json(error.message)
+    }
 }
 
 const updateProduct = async(req,res,next)=>{
@@ -110,25 +129,27 @@ const updateProduct = async(req,res,next)=>{
            } else {
               res.status(200).redirect("/product")
            }
-        })
+        });
+
+
 }
 
 const updateDetails = async(req,res,next)=>{
-    Product.findOneAndUpdate(
-        { _id: req.params.id, "details.size": req.body.newSize }, {
-        $set: {
-           "details.$.quantity": req.body.newQuantity
-        },
-        $currentDate: { lastModified: true }
-     },
-        { new: true }, (err, docs) => {
-           if (err) {
-              console.log("Incomplete! Cause data have a problem");
-              next(err)
-           } else {
-              res.status(200).redirect("/product")
-           }
-        })
+   Product.findOneAndUpdate(
+      { _id: req.params.id, "details.size": req.body.newSize }, {
+      $set: {
+         "details.$.quantity": req.body.newQuantity
+      },
+      $currentDate: { lastModified: true }
+   },
+      { new: true }, (err, docs) => {
+         if (err) {
+            console.log("Incomplete! Cause data have a problem");
+            next(err)
+         } else {
+            res.status(200).redirect("/product")
+         }
+      })
 }
 
-module.exports = {getAllProduct, createProduct, getProductById,updateProduct,updateDetails };
+module.exports = {getAllProduct, createProduct, getProductById,updateProduct,updateDetails, getDataJSONByID, page};

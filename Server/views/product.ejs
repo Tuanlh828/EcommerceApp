@@ -276,6 +276,10 @@
          color: var(--white)
       }
 
+      .content {
+         background-color: aliceblue;
+      }
+
       .details {
          position: relative;
          width: 100%;
@@ -542,6 +546,67 @@
                <button id="myBtn" class="btn">Thêm</button>
             </div>
 
+            <div class="content">
+               <div class="details">
+                  <table id="example" class="table table-striped table-bordered nowrap">
+                     <thead>
+                        <tr>
+                           <td>Hình ảnh</td>
+                           <td>Tên sản phẩm</td>
+                           <td>Giá tiền</td>
+                           <td>Loại sản phẩm</td>
+                           <td>Thông tin</td>
+                           <td>Trạng thái</td>
+                           <td>Hành động</td>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <% product.forEach((item)=> { %>
+                           <tr>
+                              <td>
+                                 <div>
+                                    <img src="/uploads/images/<%= item.img %>">
+                                 </div>
+                              </td>
+                              <td>
+                                 <%= item.title %>
+                              </td>
+                              <td>
+                                 <%= item.price.toLocaleString() + '₫' %>
+
+                              </td>
+                              <td>
+                                 <%= item.categories %>
+                              </td>
+                              <td>
+                                 <% for (let index=0; index < item.details.length; index++) { %>
+                                    <%= 'Size: ' + item.details[index].size + ',' %>
+                                       <%= 'Số lượng: ' + item.details[index].quantity %>
+                                          <br>
+                                          <% }%>
+                              </td>
+                              <td>
+                                 <% if (item.status==0) { %>
+                                    <span class="status delivered">Còn hàng</span>
+                                    <% } else if (item.status !==0) { %>
+                                       <span class="status return">Hết hàng</span>
+                                       <% } %>
+                              </td>
+                              <td>
+                                 <!-- <a class=" ui purple button" href="/product/<%= item._id %>"><ion-icon
+                                    name="create-outline"></ion-icon></a> -->
+                                 <button type="button" class="btn btn-success">
+                                    <a style="text-decoration:none; color: #fefefe;"
+                                       href="/product/<%= item._id %>">Sửa</a>
+                                 </button>
+                              </td>
+
+                           </tr>
+                           <% }) %>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
             <!-- The Modal Thêm Sản phẩm -->
             <div id="myModal" class="modal">
                <div class="modal-content">
@@ -601,64 +666,7 @@
             </div>
          </div>
          <!-- Bảng thông tin sản phẩm -->
-         <div class="details">
-            <table id="example" class="table table-striped table-bordered nowrap">
-               <thead>
-                  <tr>
-                     <td>Hình ảnh</td>
-                     <td>Tên sản phẩm</td>
-                     <td>Giá tiền</td>
-                     <td>Loại sản phẩm</td>
-                     <td>Thông tin</td>
-                     <td>Trạng thái</td>
-                     <td>Hành động</td>
-                  </tr>
-               </thead>
-               <tbody>
-                  <% product.forEach((item)=> { %>
-                     <tr>
-                        <td>
-                           <div>
-                              <img src="/uploads/images/<%= item.img %>">
-                           </div>
-                        </td>
-                        <td>
-                           <%= item.title %>
-                        </td>
-                        <td>
-                           <%= item.price.toLocaleString() + '₫' %>
 
-                        </td>
-                        <td>
-                           <%= item.categories %>
-                        </td>
-                        <td>
-                           <% for (let index=0; index < item.details.length; index++) { %>
-                              <%= '-' + 'Size: ' + item.details[index].size + ',' %>
-                                 <%= 'Số lượng: ' + item.details[index].quantity %>
-                                    <br>
-                                    <% }%>
-                        </td>
-                        <td>
-                           <% if (item.status==0) { %>
-                              <p>Còn hàng</p>
-                              <% } else if (item.status !==0) { %>
-                                 <p>Hết hàng</p>
-                                 <% } %>
-                        </td>
-                        <td>
-                           <!-- <a class=" ui purple button" href="/product/<%= item._id %>"><ion-icon
-                              name="create-outline"></ion-icon></a> -->
-                           <button type="button" class="btn btn-success">
-                              <a style="text-decoration:none; color: #fefefe;" href="/product/<%= item._id %>">Sửa</a>
-                           </button>
-                        </td>
-
-                     </tr>
-                     <% }) %>
-               </tbody>
-            </table>
-         </div>
    </div>
 
    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

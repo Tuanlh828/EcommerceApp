@@ -18,7 +18,13 @@ router.post("/", verifytokenAndAdmin, async (req, res) => {
 })
 
 /**
- * @description update by id
+ * @description data user
+ * @method GET /user/_id
+ */
+
+
+/**
+ * @description update
  * @method PUT /update
  */
 router.put("/update", verifytokenAndAdmin, async (req, res) => {
