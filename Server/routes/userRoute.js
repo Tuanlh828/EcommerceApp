@@ -12,6 +12,7 @@ router.post('/register', registerUser);
  */
 router.post('/', loginUser);
 
+
 /**
  * @description get data by id
  */

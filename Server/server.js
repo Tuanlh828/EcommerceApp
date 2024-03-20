@@ -25,7 +25,9 @@ app.use(express.json());
 app.set("view engine", "ejs");
 app.set("views","./views");
 
+
 app.use('/views', express.static('views'));
+
 
 // load routes - SERVER
 const productServer = require('./routes/productServer');

@@ -27,6 +27,7 @@ const registerUser = async (req, res, next) => {
       return res.status(422).send({ error: error.message });
     }
   });
+
 };
 
 //@desc Login a user
@@ -95,6 +96,7 @@ const getUserById = async (req,res, next) =>{
    }
 }
 
+
 //@desc Current a user
 //@route GET /current
 //@access private
@@ -114,5 +116,6 @@ const cookieJwtAuth = (req, res, next) => {
     return res.redirect("/");
   }
 };
+
 
 module.exports = { registerUser, loginUser, currentUser, cookieJwtAuth, getUserById };
